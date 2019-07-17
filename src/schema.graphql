@@ -2,68 +2,79 @@ type Query {
     info: String!
 }
 
+type Mutation {
+    postChord(rootNote: Note!,
+         chordSymbol: ChordSymbol!, 
+         intervals: [Interval!]!,
+         fingerings: [Fingering!]!) : Chord!
+}
+
 type Chord {
     id: ID!
     rootNote: Note!
     chordSymbol: ChordSymbol!
     intervals: [Interval!]!
-    fingerings: [[Fretting!]!]!
+    fingerings: [Fingering!]!
 
 }
 
+type Fingering {
+    id: ID!
+    fingering: [Fretting!]!
+}
 
 type Fretting {
+    id: ID!
     fret: Fret!
-    string: String!
     note: Note!
 }
 
 enum Interval {
-    _1
-    _2
-    _3
-    _4
-    _5
-    _6
-    _7
-    _8
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
 }
 
 
 enum String {
-    _1
-    _2
-    _3
-    _4
-    _5
-    _6
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
 }
 
 enum Fret {
-    _1
-    _2
-    _3
-    _4
-    _5
-    _6
-    _7
-    _8
-    _9
-    _10
-    _11
-    _12
-    _13
-    _14
-    _15
-    _16
-    _17
-    _18
-    _19
-    _20
-    _21
-    _22
-    _23
-    _24
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+    NINE
+    TEN
+    ELEVEN
+    TWELVE
+    THIRTEEN
+    FOURTEEN
+    FIFTEEN
+    SIXTEEN
+    SEVENTEEN
+    EIGHTEEN
+    NINETEEN
+    TWENTY
+    TWENTYONE
+    TWENTYTWO
+    TWENTYTHREE
+    TWENTYFOUR
 }
 
 
@@ -84,16 +95,16 @@ enum Note {
 
 
 enum ChordSymbol {
-    maj
-    maj6
-    maj7
-    maj9
-    min 
-    min6 
-    min7
-    min9
-    dom7
-    sus2
-    sus4
-    dim
+    Maj
+    Maj6
+    Maj7
+    Maj9
+    Min 
+    Min6 
+    Min7
+    Min9
+    Dom7
+    Sus2
+    Sus4
+    Dim
 }

@@ -1,4 +1,99 @@
-type User {
-  id: ID! @id
-  name: String!
+type Chord {
+    id: ID! @id
+    rootNote: Note!
+    chordSymbol: ChordSymbol!
+    intervals: [Interval!]!
+    fingerings: [Fingering!]! @relation(link: INLINE)
+
+}
+
+type Fingering {
+    id: ID! @id
+    fingering: [Fretting!]! 
+}
+
+type Fretting @embedded {
+    id: ID! @id
+    fret: Fret!
+    note: Note!
+}
+
+enum Interval {
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+}
+
+
+enum String {
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+}
+
+enum Fret {
+    ONE
+    TWO
+    THREE
+    FOUR
+    FIVE
+    SIX
+    SEVEN
+    EIGHT
+    NINE
+    TEN
+    ELEVEN
+    TWELVE
+    THIRTEEN
+    FOURTEEN
+    FIFTEEN
+    SIXTEEN
+    SEVENTEEN
+    EIGHTEEN
+    NINETEEN
+    TWENTY
+    TWENTYONE
+    TWENTYTWO
+    TWENTYTHREE
+    TWENTYFOUR
+}
+
+
+enum Note {
+    A
+    A_SHARP__B_FLAT
+    B
+    C
+    C_SHARP__D_FLAT
+    D
+    D_SHARP__E_FLAT
+    E 
+    F
+    F_SHARP__G_FLAT
+    G
+    G_SHARP__A_FLAT
+}
+
+
+enum ChordSymbol {
+    Maj
+    Maj6
+    Maj7
+    Maj9
+    Min 
+    Min6 
+    Min7
+    Min9
+    Dom7
+    Sus2
+    Sus4
+    Dim
 }

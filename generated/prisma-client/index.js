@@ -5,7 +5,35 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "User",
+    name: "Chord",
+    embedded: false
+  },
+  {
+    name: "Fingering",
+    embedded: false
+  },
+  {
+    name: "Fretting",
+    embedded: false
+  },
+  {
+    name: "Interval",
+    embedded: false
+  },
+  {
+    name: "String",
+    embedded: false
+  },
+  {
+    name: "Fret",
+    embedded: false
+  },
+  {
+    name: "Note",
+    embedded: false
+  },
+  {
+    name: "ChordSymbol",
     embedded: false
   }
 ];
