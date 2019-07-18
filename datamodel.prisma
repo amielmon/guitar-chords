@@ -15,7 +15,7 @@ type Fingering {
 type Fretting @embedded {
     id: ID! @id
     fret: Fret!
-    note: Note!
+    stringNum: StringNum!
 }
 
 enum Interval {
@@ -30,7 +30,7 @@ enum Interval {
 }
 
 
-enum String {
+enum StringNum {
     ONE
     TWO
     THREE

@@ -3,10 +3,7 @@ type Query {
 }
 
 type Mutation {
-    postChord(rootNote: Note!,
-         chordSymbol: ChordSymbol!, 
-         intervals: [Interval!]!,
-         fingerings: [Fingering!]!) : Chord!
+    postChord(rootNote: Note!, chordSymbol: ChordSymbol!, intervals: [Interval!]!, fingerings: [FingeringInput!]!) : Chord!
 }
 
 type Chord {
@@ -15,7 +12,15 @@ type Chord {
     chordSymbol: ChordSymbol!
     intervals: [Interval!]!
     fingerings: [Fingering!]!
+}
 
+input FingeringInput {
+    fingering: [FrettingInput!]!
+}
+
+input FrettingInput {
+    fret: Fret!
+    stringNum: StringNum!
 }
 
 type Fingering {
@@ -26,7 +31,7 @@ type Fingering {
 type Fretting {
     id: ID!
     fret: Fret!
-    note: Note!
+    stringNum: StringNum!
 }
 
 enum Interval {
@@ -41,7 +46,7 @@ enum Interval {
 }
 
 
-enum String {
+enum StringNum {
     ONE
     TWO
     THREE

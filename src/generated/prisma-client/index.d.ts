@@ -16,7 +16,9 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  user: (where?: UserWhereInput) => Promise<boolean>;
+  chord: (where?: ChordWhereInput) => Promise<boolean>;
+  fingering: (where?: FingeringWhereInput) => Promise<boolean>;
+  fretting: (where?: FrettingWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -38,47 +40,113 @@ export interface Prisma {
    * Queries
    */
 
-  user: (where: UserWhereUniqueInput) => UserNullablePromise;
-  users: (args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
+  chord: (where: ChordWhereUniqueInput) => ChordNullablePromise;
+  chords: (args?: {
+    where?: ChordWhereInput;
+    orderBy?: ChordOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<User>;
-  usersConnection: (args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
+  }) => FragmentableArray<Chord>;
+  chordsConnection: (args?: {
+    where?: ChordWhereInput;
+    orderBy?: ChordOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => UserConnectionPromise;
+  }) => ChordConnectionPromise;
+  fingering: (where: FingeringWhereUniqueInput) => FingeringNullablePromise;
+  fingerings: (args?: {
+    where?: FingeringWhereInput;
+    orderBy?: FingeringOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Fingering>;
+  fingeringsConnection: (args?: {
+    where?: FingeringWhereInput;
+    orderBy?: FingeringOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FingeringConnectionPromise;
+  fretting: (where: FrettingWhereUniqueInput) => FrettingNullablePromise;
+  frettings: (args?: {
+    where?: FrettingWhereInput;
+    orderBy?: FrettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Fretting>;
+  frettingsConnection: (args?: {
+    where?: FrettingWhereInput;
+    orderBy?: FrettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FrettingConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
-  createUser: (data: UserCreateInput) => UserPromise;
-  updateUser: (args: {
-    data: UserUpdateInput;
-    where: UserWhereUniqueInput;
-  }) => UserPromise;
-  updateManyUsers: (args: {
-    data: UserUpdateManyMutationInput;
-    where?: UserWhereInput;
+  createChord: (data: ChordCreateInput) => ChordPromise;
+  updateChord: (args: {
+    data: ChordUpdateInput;
+    where: ChordWhereUniqueInput;
+  }) => ChordPromise;
+  updateManyChords: (args: {
+    data: ChordUpdateManyMutationInput;
+    where?: ChordWhereInput;
   }) => BatchPayloadPromise;
-  upsertUser: (args: {
-    where: UserWhereUniqueInput;
-    create: UserCreateInput;
-    update: UserUpdateInput;
-  }) => UserPromise;
-  deleteUser: (where: UserWhereUniqueInput) => UserPromise;
-  deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  upsertChord: (args: {
+    where: ChordWhereUniqueInput;
+    create: ChordCreateInput;
+    update: ChordUpdateInput;
+  }) => ChordPromise;
+  deleteChord: (where: ChordWhereUniqueInput) => ChordPromise;
+  deleteManyChords: (where?: ChordWhereInput) => BatchPayloadPromise;
+  createFingering: (data: FingeringCreateInput) => FingeringPromise;
+  updateFingering: (args: {
+    data: FingeringUpdateInput;
+    where: FingeringWhereUniqueInput;
+  }) => FingeringPromise;
+  upsertFingering: (args: {
+    where: FingeringWhereUniqueInput;
+    create: FingeringCreateInput;
+    update: FingeringUpdateInput;
+  }) => FingeringPromise;
+  deleteFingering: (where: FingeringWhereUniqueInput) => FingeringPromise;
+  deleteManyFingerings: (where?: FingeringWhereInput) => BatchPayloadPromise;
+  createFretting: (data: FrettingCreateInput) => FrettingPromise;
+  updateFretting: (args: {
+    data: FrettingUpdateInput;
+    where: FrettingWhereUniqueInput;
+  }) => FrettingPromise;
+  updateManyFrettings: (args: {
+    data: FrettingUpdateManyMutationInput;
+    where?: FrettingWhereInput;
+  }) => BatchPayloadPromise;
+  upsertFretting: (args: {
+    where: FrettingWhereUniqueInput;
+    create: FrettingCreateInput;
+    update: FrettingUpdateInput;
+  }) => FrettingPromise;
+  deleteFretting: (where: FrettingWhereUniqueInput) => FrettingPromise;
+  deleteManyFrettings: (where?: FrettingWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -88,9 +156,15 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  user: (
-    where?: UserSubscriptionWhereInput
-  ) => UserSubscriptionPayloadSubscription;
+  chord: (
+    where?: ChordSubscriptionWhereInput
+  ) => ChordSubscriptionPayloadSubscription;
+  fingering: (
+    where?: FingeringSubscriptionWhereInput
+  ) => FingeringSubscriptionPayloadSubscription;
+  fretting: (
+    where?: FrettingSubscriptionWhereInput
+  ) => FrettingSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -101,15 +175,97 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type UserOrderByInput = "id_ASC" | "id_DESC" | "name_ASC" | "name_DESC";
+export type Note =
+  | "A"
+  | "A_SHARP__B_FLAT"
+  | "B"
+  | "C"
+  | "C_SHARP__D_FLAT"
+  | "D"
+  | "D_SHARP__E_FLAT"
+  | "E"
+  | "F"
+  | "F_SHARP__G_FLAT"
+  | "G"
+  | "G_SHARP__A_FLAT";
+
+export type ChordSymbol =
+  | "Maj"
+  | "Maj6"
+  | "Maj7"
+  | "Maj9"
+  | "Min"
+  | "Min6"
+  | "Min7"
+  | "Min9"
+  | "Dom7"
+  | "Sus2"
+  | "Sus4"
+  | "Dim";
+
+export type Interval =
+  | "ONE"
+  | "TWO"
+  | "THREE"
+  | "FOUR"
+  | "FIVE"
+  | "SIX"
+  | "SEVEN"
+  | "EIGHT";
+
+export type Fret =
+  | "ONE"
+  | "TWO"
+  | "THREE"
+  | "FOUR"
+  | "FIVE"
+  | "SIX"
+  | "SEVEN"
+  | "EIGHT"
+  | "NINE"
+  | "TEN"
+  | "ELEVEN"
+  | "TWELVE"
+  | "THIRTEEN"
+  | "FOURTEEN"
+  | "FIFTEEN"
+  | "SIXTEEN"
+  | "SEVENTEEN"
+  | "EIGHTEEN"
+  | "NINETEEN"
+  | "TWENTY"
+  | "TWENTYONE"
+  | "TWENTYTWO"
+  | "TWENTYTHREE"
+  | "TWENTYFOUR";
+
+export type StringNum = "ONE" | "TWO" | "THREE" | "FOUR" | "FIVE" | "SIX";
+
+export type FingeringOrderByInput = "id_ASC" | "id_DESC";
+
+export type FrettingOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "fret_ASC"
+  | "fret_DESC"
+  | "stringNum_ASC"
+  | "stringNum_DESC";
+
+export type ChordOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "rootNote_ASC"
+  | "rootNote_DESC"
+  | "chordSymbol_ASC"
+  | "chordSymbol_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type UserWhereUniqueInput = AtLeastOne<{
+export type ChordWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface UserWhereInput {
+export interface FingeringWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -124,96 +280,472 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+  fingering_every?: Maybe<FrettingWhereInput>;
+  fingering_some?: Maybe<FrettingWhereInput>;
+  fingering_none?: Maybe<FrettingWhereInput>;
+  AND?: Maybe<FingeringWhereInput[] | FingeringWhereInput>;
+  OR?: Maybe<FingeringWhereInput[] | FingeringWhereInput>;
+  NOT?: Maybe<FingeringWhereInput[] | FingeringWhereInput>;
 }
 
-export interface UserCreateInput {
+export interface FrettingWhereInput {
   id?: Maybe<ID_Input>;
-  name: String;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  fret?: Maybe<Fret>;
+  fret_not?: Maybe<Fret>;
+  fret_in?: Maybe<Fret[] | Fret>;
+  fret_not_in?: Maybe<Fret[] | Fret>;
+  stringNum?: Maybe<StringNum>;
+  stringNum_not?: Maybe<StringNum>;
+  stringNum_in?: Maybe<StringNum[] | StringNum>;
+  stringNum_not_in?: Maybe<StringNum[] | StringNum>;
+  AND?: Maybe<FrettingWhereInput[] | FrettingWhereInput>;
+  OR?: Maybe<FrettingWhereInput[] | FrettingWhereInput>;
+  NOT?: Maybe<FrettingWhereInput[] | FrettingWhereInput>;
 }
 
-export interface UserUpdateInput {
-  name?: Maybe<String>;
+export interface ChordWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  rootNote?: Maybe<Note>;
+  rootNote_not?: Maybe<Note>;
+  rootNote_in?: Maybe<Note[] | Note>;
+  rootNote_not_in?: Maybe<Note[] | Note>;
+  chordSymbol?: Maybe<ChordSymbol>;
+  chordSymbol_not?: Maybe<ChordSymbol>;
+  chordSymbol_in?: Maybe<ChordSymbol[] | ChordSymbol>;
+  chordSymbol_not_in?: Maybe<ChordSymbol[] | ChordSymbol>;
+  fingerings_every?: Maybe<FingeringWhereInput>;
+  fingerings_some?: Maybe<FingeringWhereInput>;
+  fingerings_none?: Maybe<FingeringWhereInput>;
+  AND?: Maybe<ChordWhereInput[] | ChordWhereInput>;
+  OR?: Maybe<ChordWhereInput[] | ChordWhereInput>;
+  NOT?: Maybe<ChordWhereInput[] | ChordWhereInput>;
 }
 
-export interface UserUpdateManyMutationInput {
-  name?: Maybe<String>;
+export type FingeringWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export type FrettingWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ChordCreateInput {
+  id?: Maybe<ID_Input>;
+  rootNote: Note;
+  chordSymbol: ChordSymbol;
+  intervals?: Maybe<ChordCreateintervalsInput>;
+  fingerings?: Maybe<FingeringCreateManyInput>;
 }
 
-export interface UserSubscriptionWhereInput {
+export interface ChordCreateintervalsInput {
+  set?: Maybe<Interval[] | Interval>;
+}
+
+export interface FingeringCreateManyInput {
+  create?: Maybe<FingeringCreateInput[] | FingeringCreateInput>;
+  connect?: Maybe<FingeringWhereUniqueInput[] | FingeringWhereUniqueInput>;
+}
+
+export interface FingeringCreateInput {
+  id?: Maybe<ID_Input>;
+  fingering?: Maybe<FrettingCreateManyInput>;
+}
+
+export interface FrettingCreateManyInput {
+  create?: Maybe<FrettingCreateInput[] | FrettingCreateInput>;
+  connect?: Maybe<FrettingWhereUniqueInput[] | FrettingWhereUniqueInput>;
+}
+
+export interface FrettingCreateInput {
+  id?: Maybe<ID_Input>;
+  fret: Fret;
+  stringNum: StringNum;
+}
+
+export interface ChordUpdateInput {
+  rootNote?: Maybe<Note>;
+  chordSymbol?: Maybe<ChordSymbol>;
+  intervals?: Maybe<ChordUpdateintervalsInput>;
+  fingerings?: Maybe<FingeringUpdateManyInput>;
+}
+
+export interface ChordUpdateintervalsInput {
+  set?: Maybe<Interval[] | Interval>;
+}
+
+export interface FingeringUpdateManyInput {
+  create?: Maybe<FingeringCreateInput[] | FingeringCreateInput>;
+  update?: Maybe<
+    | FingeringUpdateWithWhereUniqueNestedInput[]
+    | FingeringUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | FingeringUpsertWithWhereUniqueNestedInput[]
+    | FingeringUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<FingeringWhereUniqueInput[] | FingeringWhereUniqueInput>;
+  connect?: Maybe<FingeringWhereUniqueInput[] | FingeringWhereUniqueInput>;
+  set?: Maybe<FingeringWhereUniqueInput[] | FingeringWhereUniqueInput>;
+  disconnect?: Maybe<FingeringWhereUniqueInput[] | FingeringWhereUniqueInput>;
+  deleteMany?: Maybe<FingeringScalarWhereInput[] | FingeringScalarWhereInput>;
+}
+
+export interface FingeringUpdateWithWhereUniqueNestedInput {
+  where: FingeringWhereUniqueInput;
+  data: FingeringUpdateDataInput;
+}
+
+export interface FingeringUpdateDataInput {
+  fingering?: Maybe<FrettingUpdateManyInput>;
+}
+
+export interface FrettingUpdateManyInput {
+  create?: Maybe<FrettingCreateInput[] | FrettingCreateInput>;
+  update?: Maybe<
+    | FrettingUpdateWithWhereUniqueNestedInput[]
+    | FrettingUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | FrettingUpsertWithWhereUniqueNestedInput[]
+    | FrettingUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<FrettingWhereUniqueInput[] | FrettingWhereUniqueInput>;
+  connect?: Maybe<FrettingWhereUniqueInput[] | FrettingWhereUniqueInput>;
+  set?: Maybe<FrettingWhereUniqueInput[] | FrettingWhereUniqueInput>;
+  disconnect?: Maybe<FrettingWhereUniqueInput[] | FrettingWhereUniqueInput>;
+  deleteMany?: Maybe<FrettingScalarWhereInput[] | FrettingScalarWhereInput>;
+  updateMany?: Maybe<
+    | FrettingUpdateManyWithWhereNestedInput[]
+    | FrettingUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface FrettingUpdateWithWhereUniqueNestedInput {
+  where: FrettingWhereUniqueInput;
+  data: FrettingUpdateDataInput;
+}
+
+export interface FrettingUpdateDataInput {
+  fret?: Maybe<Fret>;
+  stringNum?: Maybe<StringNum>;
+}
+
+export interface FrettingUpsertWithWhereUniqueNestedInput {
+  where: FrettingWhereUniqueInput;
+  update: FrettingUpdateDataInput;
+  create: FrettingCreateInput;
+}
+
+export interface FrettingScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  fret?: Maybe<Fret>;
+  fret_not?: Maybe<Fret>;
+  fret_in?: Maybe<Fret[] | Fret>;
+  fret_not_in?: Maybe<Fret[] | Fret>;
+  stringNum?: Maybe<StringNum>;
+  stringNum_not?: Maybe<StringNum>;
+  stringNum_in?: Maybe<StringNum[] | StringNum>;
+  stringNum_not_in?: Maybe<StringNum[] | StringNum>;
+  AND?: Maybe<FrettingScalarWhereInput[] | FrettingScalarWhereInput>;
+  OR?: Maybe<FrettingScalarWhereInput[] | FrettingScalarWhereInput>;
+  NOT?: Maybe<FrettingScalarWhereInput[] | FrettingScalarWhereInput>;
+}
+
+export interface FrettingUpdateManyWithWhereNestedInput {
+  where: FrettingScalarWhereInput;
+  data: FrettingUpdateManyDataInput;
+}
+
+export interface FrettingUpdateManyDataInput {
+  fret?: Maybe<Fret>;
+  stringNum?: Maybe<StringNum>;
+}
+
+export interface FingeringUpsertWithWhereUniqueNestedInput {
+  where: FingeringWhereUniqueInput;
+  update: FingeringUpdateDataInput;
+  create: FingeringCreateInput;
+}
+
+export interface FingeringScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  AND?: Maybe<FingeringScalarWhereInput[] | FingeringScalarWhereInput>;
+  OR?: Maybe<FingeringScalarWhereInput[] | FingeringScalarWhereInput>;
+  NOT?: Maybe<FingeringScalarWhereInput[] | FingeringScalarWhereInput>;
+}
+
+export interface ChordUpdateManyMutationInput {
+  rootNote?: Maybe<Note>;
+  chordSymbol?: Maybe<ChordSymbol>;
+  intervals?: Maybe<ChordUpdateintervalsInput>;
+}
+
+export interface FingeringUpdateInput {
+  fingering?: Maybe<FrettingUpdateManyInput>;
+}
+
+export interface FrettingUpdateInput {
+  fret?: Maybe<Fret>;
+  stringNum?: Maybe<StringNum>;
+}
+
+export interface FrettingUpdateManyMutationInput {
+  fret?: Maybe<Fret>;
+  stringNum?: Maybe<StringNum>;
+}
+
+export interface ChordSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  node?: Maybe<ChordWhereInput>;
+  AND?: Maybe<ChordSubscriptionWhereInput[] | ChordSubscriptionWhereInput>;
+  OR?: Maybe<ChordSubscriptionWhereInput[] | ChordSubscriptionWhereInput>;
+  NOT?: Maybe<ChordSubscriptionWhereInput[] | ChordSubscriptionWhereInput>;
+}
+
+export interface FingeringSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FingeringWhereInput>;
+  AND?: Maybe<
+    FingeringSubscriptionWhereInput[] | FingeringSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    FingeringSubscriptionWhereInput[] | FingeringSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    FingeringSubscriptionWhereInput[] | FingeringSubscriptionWhereInput
+  >;
+}
+
+export interface FrettingSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<FrettingWhereInput>;
+  AND?: Maybe<
+    FrettingSubscriptionWhereInput[] | FrettingSubscriptionWhereInput
+  >;
+  OR?: Maybe<FrettingSubscriptionWhereInput[] | FrettingSubscriptionWhereInput>;
+  NOT?: Maybe<
+    FrettingSubscriptionWhereInput[] | FrettingSubscriptionWhereInput
+  >;
 }
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface User {
+export interface Chord {
   id: ID_Output;
-  name: String;
+  rootNote: Note;
+  chordSymbol: ChordSymbol;
+  intervals: Interval[];
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface ChordPromise extends Promise<Chord>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  rootNote: () => Promise<Note>;
+  chordSymbol: () => Promise<ChordSymbol>;
+  intervals: () => Promise<Interval[]>;
+  fingerings: <T = FragmentableArray<Fingering>>(args?: {
+    where?: FingeringWhereInput;
+    orderBy?: FingeringOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface ChordSubscription
+  extends Promise<AsyncIterator<Chord>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  rootNote: () => Promise<AsyncIterator<Note>>;
+  chordSymbol: () => Promise<AsyncIterator<ChordSymbol>>;
+  intervals: () => Promise<AsyncIterator<Interval[]>>;
+  fingerings: <T = Promise<AsyncIterator<FingeringSubscription>>>(args?: {
+    where?: FingeringWhereInput;
+    orderBy?: FingeringOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface ChordNullablePromise
+  extends Promise<Chord | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  rootNote: () => Promise<Note>;
+  chordSymbol: () => Promise<ChordSymbol>;
+  intervals: () => Promise<Interval[]>;
+  fingerings: <T = FragmentableArray<Fingering>>(args?: {
+    where?: FingeringWhereInput;
+    orderBy?: FingeringOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserConnection {
+export interface Fingering {
+  id: ID_Output;
+}
+
+export interface FingeringPromise extends Promise<Fingering>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  fingering: <T = FragmentableArray<Fretting>>(args?: {
+    where?: FrettingWhereInput;
+    orderBy?: FrettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface FingeringSubscription
+  extends Promise<AsyncIterator<Fingering>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  fingering: <T = Promise<AsyncIterator<FrettingSubscription>>>(args?: {
+    where?: FrettingWhereInput;
+    orderBy?: FrettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface FingeringNullablePromise
+  extends Promise<Fingering | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  fingering: <T = FragmentableArray<Fretting>>(args?: {
+    where?: FrettingWhereInput;
+    orderBy?: FrettingOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface Fretting {
+  id: ID_Output;
+  fret: Fret;
+  stringNum: StringNum;
+}
+
+export interface FrettingPromise extends Promise<Fretting>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  fret: () => Promise<Fret>;
+  stringNum: () => Promise<StringNum>;
+}
+
+export interface FrettingSubscription
+  extends Promise<AsyncIterator<Fretting>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  fret: () => Promise<AsyncIterator<Fret>>;
+  stringNum: () => Promise<AsyncIterator<StringNum>>;
+}
+
+export interface FrettingNullablePromise
+  extends Promise<Fretting | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  fret: () => Promise<Fret>;
+  stringNum: () => Promise<StringNum>;
+}
+
+export interface ChordConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: ChordEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface ChordConnectionPromise
+  extends Promise<ChordConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<ChordEdge>>() => T;
+  aggregate: <T = AggregateChordPromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface ChordConnectionSubscription
+  extends Promise<AsyncIterator<ChordConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ChordEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateChordSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -239,35 +771,147 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface UserEdge {
-  node: User;
+export interface ChordEdge {
+  node: Chord;
   cursor: String;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
+export interface ChordEdgePromise extends Promise<ChordEdge>, Fragmentable {
+  node: <T = ChordPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface ChordEdgeSubscription
+  extends Promise<AsyncIterator<ChordEdge>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
+  node: <T = ChordSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateUser {
+export interface AggregateChord {
   count: Int;
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface AggregateChordPromise
+  extends Promise<AggregateChord>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface AggregateChordSubscription
+  extends Promise<AsyncIterator<AggregateChord>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface FingeringConnection {
+  pageInfo: PageInfo;
+  edges: FingeringEdge[];
+}
+
+export interface FingeringConnectionPromise
+  extends Promise<FingeringConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FingeringEdge>>() => T;
+  aggregate: <T = AggregateFingeringPromise>() => T;
+}
+
+export interface FingeringConnectionSubscription
+  extends Promise<AsyncIterator<FingeringConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FingeringEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFingeringSubscription>() => T;
+}
+
+export interface FingeringEdge {
+  node: Fingering;
+  cursor: String;
+}
+
+export interface FingeringEdgePromise
+  extends Promise<FingeringEdge>,
+    Fragmentable {
+  node: <T = FingeringPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FingeringEdgeSubscription
+  extends Promise<AsyncIterator<FingeringEdge>>,
+    Fragmentable {
+  node: <T = FingeringSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFingering {
+  count: Int;
+}
+
+export interface AggregateFingeringPromise
+  extends Promise<AggregateFingering>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFingeringSubscription
+  extends Promise<AsyncIterator<AggregateFingering>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface FrettingConnection {
+  pageInfo: PageInfo;
+  edges: FrettingEdge[];
+}
+
+export interface FrettingConnectionPromise
+  extends Promise<FrettingConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FrettingEdge>>() => T;
+  aggregate: <T = AggregateFrettingPromise>() => T;
+}
+
+export interface FrettingConnectionSubscription
+  extends Promise<AsyncIterator<FrettingConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FrettingEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFrettingSubscription>() => T;
+}
+
+export interface FrettingEdge {
+  node: Fretting;
+  cursor: String;
+}
+
+export interface FrettingEdgePromise
+  extends Promise<FrettingEdge>,
+    Fragmentable {
+  node: <T = FrettingPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface FrettingEdgeSubscription
+  extends Promise<AsyncIterator<FrettingEdge>>,
+    Fragmentable {
+  node: <T = FrettingSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateFretting {
+  count: Int;
+}
+
+export interface AggregateFrettingPromise
+  extends Promise<AggregateFretting>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFrettingSubscription
+  extends Promise<AsyncIterator<AggregateFretting>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -288,48 +932,142 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface UserSubscriptionPayload {
+export interface ChordSubscriptionPayload {
   mutation: MutationType;
-  node: User;
+  node: Chord;
   updatedFields: String[];
-  previousValues: UserPreviousValues;
+  previousValues: ChordPreviousValues;
 }
 
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
+export interface ChordSubscriptionPayloadPromise
+  extends Promise<ChordSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
+  node: <T = ChordPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
+  previousValues: <T = ChordPreviousValuesPromise>() => T;
 }
 
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+export interface ChordSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ChordSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
+  node: <T = ChordSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
+  previousValues: <T = ChordPreviousValuesSubscription>() => T;
 }
 
-export interface UserPreviousValues {
+export interface ChordPreviousValues {
   id: ID_Output;
-  name: String;
+  rootNote: Note;
+  chordSymbol: ChordSymbol;
+  intervals: Interval[];
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface ChordPreviousValuesPromise
+  extends Promise<ChordPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  rootNote: () => Promise<Note>;
+  chordSymbol: () => Promise<ChordSymbol>;
+  intervals: () => Promise<Interval[]>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface ChordPreviousValuesSubscription
+  extends Promise<AsyncIterator<ChordPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  rootNote: () => Promise<AsyncIterator<Note>>;
+  chordSymbol: () => Promise<AsyncIterator<ChordSymbol>>;
+  intervals: () => Promise<AsyncIterator<Interval[]>>;
+}
+
+export interface FingeringSubscriptionPayload {
+  mutation: MutationType;
+  node: Fingering;
+  updatedFields: String[];
+  previousValues: FingeringPreviousValues;
+}
+
+export interface FingeringSubscriptionPayloadPromise
+  extends Promise<FingeringSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FingeringPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FingeringPreviousValuesPromise>() => T;
+}
+
+export interface FingeringSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FingeringSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FingeringSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FingeringPreviousValuesSubscription>() => T;
+}
+
+export interface FingeringPreviousValues {
+  id: ID_Output;
+}
+
+export interface FingeringPreviousValuesPromise
+  extends Promise<FingeringPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface FingeringPreviousValuesSubscription
+  extends Promise<AsyncIterator<FingeringPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface FrettingSubscriptionPayload {
+  mutation: MutationType;
+  node: Fretting;
+  updatedFields: String[];
+  previousValues: FrettingPreviousValues;
+}
+
+export interface FrettingSubscriptionPayloadPromise
+  extends Promise<FrettingSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FrettingPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FrettingPreviousValuesPromise>() => T;
+}
+
+export interface FrettingSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FrettingSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FrettingSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FrettingPreviousValuesSubscription>() => T;
+}
+
+export interface FrettingPreviousValues {
+  id: ID_Output;
+  fret: Fret;
+  stringNum: StringNum;
+}
+
+export interface FrettingPreviousValuesPromise
+  extends Promise<FrettingPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  fret: () => Promise<Fret>;
+  stringNum: () => Promise<StringNum>;
+}
+
+export interface FrettingPreviousValuesSubscription
+  extends Promise<AsyncIterator<FrettingPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  fret: () => Promise<AsyncIterator<Fret>>;
+  stringNum: () => Promise<AsyncIterator<StringNum>>;
 }
 
 /*
@@ -339,14 +1077,14 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
@@ -361,7 +1099,35 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: "User",
+    name: "Chord",
+    embedded: false
+  },
+  {
+    name: "Fingering",
+    embedded: false
+  },
+  {
+    name: "Fretting",
+    embedded: false
+  },
+  {
+    name: "Interval",
+    embedded: false
+  },
+  {
+    name: "StringNum",
+    embedded: false
+  },
+  {
+    name: "Fret",
+    embedded: false
+  },
+  {
+    name: "Note",
+    embedded: false
+  },
+  {
+    name: "ChordSymbol",
     embedded: false
   }
 ];
